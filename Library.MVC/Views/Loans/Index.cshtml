@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Library.Domain.Loan>
+@{
+    ViewData["Title"] = "Loans";
+    var today = DateTime.Today;
+}
+
+<h2>Loans</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">+ New Loan</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Loan Date</th>
+            <th>Due Date</th>
+            <th>Returned</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            var isOverdue = loan.ReturnedDate == null && loan.DueDate < today;
+            <tr class="@(isOverdue ? "table-danger" : "")">
+                <td>@loan.Book.Title</td>
+                <td>@loan.Member.FullName</td>
+                <td>@loan.LoanDate.ToShortDateString()</td>
+                <td>@loan.DueDate.ToShortDateString()</td>
+                <td>@(loan.ReturnedDate.HasValue ? loan.ReturnedDate.Value.ToShortDateString() : "-")</td>
+                <td>
+                    @if (loan.ReturnedDate.HasValue)
+                    {
+                        <span class="badge bg-success">Returned</span>
+                    }
+                    else if (isOverdue)
+                    {
+                        <span class="badge bg-danger">Overdue</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Active</span>
+                    }
+                </td>
+                <td>
+                    @if (loan.ReturnedDate == null)
+                    {
+                        <form asp-action="MarkReturned" asp-route-id="@loan.Id" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-success">Mark Returned</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

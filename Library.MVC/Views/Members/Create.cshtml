@@ -1,0 +1,24 @@
+﻿@model Library.Domain.Member
+@{
+    ViewData["Title"] = "Add Member";
+}
+
+<h2>Add Member</h2>
+<div class="col-md-5">
+    <form asp-action="Create">
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label"></label>
+            <input asp-for="FullName" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label"></label>
+            <input asp-for="Phone" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

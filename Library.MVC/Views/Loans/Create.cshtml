@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "New Loan";
+}
+
+<h2>New Loan</h2>
+<div class="col-md-5">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="mb-3">
+            <label class="form-label">Member</label>
+            <select name="memberId" class="form-select" required>
+                <option value="">-- Select Member --</option>
+                @foreach (var item in (Microsoft.AspNetCore.Mvc.Rendering.SelectList)ViewBag.Members)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Book (Available only)</label>
+            <select name="bookId" class="form-select" required>
+                <option value="">-- Select Book --</option>
+                @foreach (var item in (Microsoft.AspNetCore.Mvc.Rendering.SelectList)ViewBag.Books)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Loan</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
